@@ -12,6 +12,20 @@ def twitter_search(twitter_query):
     request_tweets = api.request('search/tweets', {'q':twitter_query})
     return request_tweets
 
+def prepare_tweets(tweet):
+    """ Pass in tweet and returns list of elements of
+    each tweet for csv or other destination"""
+    return [
+        tweet["text"],
+        tweet["retweet_count"],
+        tweet["user"]["name"],
+        tweet["favorite_count"],
+        tweet["user"]["location"],
+        tweet["created_at"],
+        hashtags(tweet["entities"]["hashtags"])
+    ]
+
+
 def make_csv(request_tweets):
     with open('twitterproj.csv', 'w') as csvfile:
         twitter_writer = csv.writer(csvfile)
@@ -23,16 +37,8 @@ def make_csv(request_tweets):
             "Location of User",
             "Date/Time of Tweet",
             "Hashtags in Tweet"])
-        for item in request_tweets:
-             twitter_writer.writerow([
-                item["text"],
-                item["retweet_count"],
-                item["user"]["name"],
-                item["favorite_count"],
-                item["user"]["location"],
-                item["created_at"],
-                hashtags(item["entities"]["hashtags"])
-            ])
+        for tweet in request_tweets:
+             twitter_writer.writerow(prepare_tweets(tweet))
 
 def hashtags(list_of_hashtags):
     string = ""
