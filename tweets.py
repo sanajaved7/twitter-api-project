@@ -12,7 +12,8 @@ def twitter_search(twitter_query):
     Twitter and it creates a csv file with
     the tweets pulled from the API
     """
-    request_tweets = api.request('search/tweets', {'q': twitter_query})
+    request_tweets = api.request(
+        'search/tweets', {'q': twitter_query, 'count': 100})
     return request_tweets
 
 
@@ -30,8 +31,10 @@ def prepare_tweets(tweet):
     ]
 
 
-def make_csv(request_tweets):
-    with open('twitterproj.csv', 'w') as csvfile:
+def make_csv(request_tweets, csv_name='tweets.csv'):
+    """ Pass in list of tweets and name desired for csv output file.
+    Creates csv file """
+    with open(csv_name, 'w') as csvfile:
         twitter_writer = csv.writer(csvfile)
         twitter_writer.writerow([
             "Tweet Text",
@@ -46,21 +49,15 @@ def make_csv(request_tweets):
 
 
 def hashtags(list_of_hashtags):
+    """ Pass in list of hashtags used in each tweet and returns
+    hashtags with the pound sign added for easy reading. """
     string = ""
     for x in list_of_hashtags:
         string += "#" + x["text"] + " "
     return string
 
-# "text"
-# "retweet_count"
-# "user"
-# "favourites_count"
-# "location"
-# "created_at"
-# "hashtags"
 
 if __name__ == '__main__':
-    tweets = twitter_search("#blacklivesmatter")
-    make_csv(tweets)
-    # get twitter search , etc
-    # some_fucntion_that_processes_raw_input()
+    tweets = twitter_search(twitter_query="#blacklivesmatter")
+    make_csv(request_tweets=tweets, csv_name='blm.csv')
+
