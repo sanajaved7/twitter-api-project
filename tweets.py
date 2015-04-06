@@ -10,6 +10,9 @@ def twitter_search(twitter_query):
     """ Pass in what you want to search for in Twitter and it creates a csv file with the tweets pulled from the API
     """
     request_tweets = api.request('search/tweets', {'q':twitter_query})
+    return request_tweets
+
+def make_csv(request_tweets):
     with open('twitterproj.csv', 'w') as csvfile:
         twitter_writer = csv.writer(csvfile)
         twitter_writer.writerow(
@@ -46,6 +49,7 @@ def hashtags(list_of_hashtags):
 # "hashtags"
 
 if __name__ == '__main__':
-    twitter_search("#blacklivesmatter")
+    tweets = twitter_search("#blacklivesmatter")
+    make_csv(tweets)
     # get twitter search , etc
     # some_fucntion_that_processes_raw_input()
