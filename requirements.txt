@@ -1,0 +1,8 @@
+flake8==2.4.0
+mccabe==0.3
+oauthlib==0.7.2
+pep8==1.5.7
+pyflakes==0.8.1
+requests==2.6.0
+requests-oauthlib==0.4.2
+TwitterAPI==2.3.3
